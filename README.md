@@ -1,4 +1,3 @@
-```markdown
 # Pusher-AIO - A Complete Python Wrapper for Pusher
 
 Pusher-AIO is an enhanced version of the official Pusher library that provides both message sending and receiving capabilities, including handling WebSocket connections and events. The official Pusher library only supports sending messages, but Pusher-AIO takes it a step further by allowing users to receive and handle messages from channels, making it a complete solution for working with Pusher in Python.
