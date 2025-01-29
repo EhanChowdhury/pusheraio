@@ -1,5 +1,3 @@
-Here's a README file for your Python library, **Pusher-AIO**:
-
 ```markdown
 # Pusher-AIO - A Complete Python Wrapper for Pusher
 
@@ -128,5 +126,3 @@ Feel free to fork the repository and submit issues or pull requests. Contributio
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
-
-This README includes installation instructions, usage examples, and method descriptions to help users get started with your library. You can customize it further as needed.
