@@ -1,2 +1,132 @@
-# pusheraio
-All in one pusher library.
+Here's a README file for your Python library, **Pusher-AIO**:
+
+```markdown
+# Pusher-AIO - A Complete Python Wrapper for Pusher
+
+Pusher-AIO is an enhanced version of the official Pusher library that provides both message sending and receiving capabilities, including handling WebSocket connections and events. The official Pusher library only supports sending messages, but Pusher-AIO takes it a step further by allowing users to receive and handle messages from channels, making it a complete solution for working with Pusher in Python.
+
+## Features
+
+- **Send Messages:** Trigger events on Pusher channels and send messages.
+- **Receive Messages:** Listen for incoming messages from Pusher channels with support for custom event handlers.
+- **WebSocket Connection:** Persistent WebSocket connection to Pusher with automatic reconnection.
+- **Event Handling:** Register custom event handlers with a decorator to manage different events on specific channels.
+- **Response Handling:** Send a message and wait for a response with a 5-second timeout, enabling a full communication cycle.
+
+## Installation
+
+You can install the required dependencies using `pip`:
+
+```bash
+pip install pusher websocket-client
+```
+
+## Usage
+
+1. **Initialize the Pusher-AIO object:**
+
+```python
+from pusher_aio import pusheraio
+
+# Replace with your own Pusher credentials
+app_id = 'your_app_id'
+key = 'your_key'
+secret = 'your_secret'
+cluster = 'your_cluster'
+verbose = True  # Set to True to enable verbose logging
+
+pusher = pusheraio(app_id, key, secret, cluster, verbose)
+```
+
+2. **Sending a Message:**
+
+```python
+# Send a message to a channel
+channel = 'my-channel'
+event = 'my-event'
+message = 'Hello, world!'
+pusher.send_message(channel, event, message)
+```
+
+3. **Receiving Messages:**
+
+Use the `@event` decorator to handle specific events on channels:
+
+```python
+# Define an event handler
+@pusher.event('my-channel', 'my-event')
+def handle_message(data):
+    print(f"Received data: {data}")
+```
+
+4. **Start Listening for Events:**
+
+```python
+# Start the WebSocket connection and listen for events
+pusher.start()
+```
+
+5. **Send Message and Wait for Response:**
+
+```python
+# Send a message and wait for a response
+response = pusher.send_message_and_get_response('my-channel', 'my-event', 'Hello!', 'response-event')
+if response:
+    print(f"Received response: {response}")
+else:
+    print("No response received within the timeout.")
+```
+
+6. **Close the WebSocket:**
+
+```python
+# Stop the WebSocket connection
+pusher.quit()
+```
+
+## API Methods
+
+### `pusheraio(app_id, key, secret, cluster, verbose)`
+- **Parameters:**
+  - `app_id` (str): Your Pusher app ID.
+  - `key` (str): Your Pusher key.
+  - `secret` (str): Your Pusher secret.
+  - `cluster` (str): Your Pusher cluster.
+  - `verbose` (bool): Enable verbose logging for debugging.
+
+### `send_message(channel, event, message)`
+- **Parameters:**
+  - `channel` (str): The name of the channel.
+  - `event` (str): The name of the event.
+  - `message` (str): The message to send.
+
+### `event(channel_name, event_name)`
+- **Parameters:**
+  - `channel_name` (str): The name of the channel.
+  - `event_name` (str): The name of the event.
+- **Returns:** A decorator function to handle incoming messages for the specified event.
+
+### `start()`
+- Starts the WebSocket connection to Pusher and listens for incoming messages.
+
+### `quit()`
+- Stops the WebSocket connection.
+
+### `send_message_and_get_response(channel, event, message, response_event)`
+- **Parameters:**
+  - `channel` (str): The name of the channel.
+  - `event` (str): The name of the event to trigger.
+  - `message` (str): The message to send.
+  - `response_event` (str): The event to listen for a response.
+- **Returns:** The response message or `False` if no response is received within 5 seconds.
+
+## Contributing
+
+Feel free to fork the repository and submit issues or pull requests. Contributions are welcome!
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
+
+This README includes installation instructions, usage examples, and method descriptions to help users get started with your library. You can customize it further as needed.
