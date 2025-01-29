@@ -127,19 +127,25 @@ class pusheraio:
 
 
         # WebSocket event handler methods
-        def on_message(ws, message):
+        def on_message(nondynamicws, message):
             self.response = message
             self.log(f"Message received: {message}")
 
-        def on_error(ws, error):
+        def on_error(nondynamicws, error):
             self.log(f"Error: {error}")
 
-        def on_close(ws, close_status_code, close_msg):
+        def on_close(nondynamicws, close_status_code, close_msg):
             self.log("Connection closed")
 
-        def on_open(ws):
+        def on_open(nondynamicws):
             """Handle WebSocket opening."""
             print("WebSocket connection established.")
+            # Subscribe to all registered channels
+            nondynamicws.send(json.dumps({
+                "event": "pusher:subscribe",
+                    "data": {"channel": channel}
+            }))
+            print(f"Subscribed to channel: {channel}")
 
         self.channel = channel  # Set the channel dynamically
         self.response = None  # Reset the response
