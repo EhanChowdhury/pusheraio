@@ -120,33 +120,52 @@ class pusheraio:
     def send_message_and_get_response(self, channel, event, message, response_event):
         """Send message, wait for response with a 5-second timeout"""
         try:
-            if self.ws:
-                self.ws.close()
+           if self.nondynamicws:
+               self.nondynamicws.close()
         except:
-            self.log("WS has not been created yet.")
+              self.log("WS has not been created yet.")
+
+
+        # WebSocket event handler methods
+        def on_message(ws, message):
+            self.response = message
+            self.log(f"Message received: {message}")
+
+        def on_error(ws, error):
+            self.log(f"Error: {error}")
+
+        def on_close(ws, close_status_code, close_msg):
+            self.log("Connection closed")
+
+        def on_open(ws):
+            """Handle WebSocket opening."""
+            print("WebSocket connection established.")
 
         self.channel = channel  # Set the channel dynamically
         self.response = None  # Reset the response
         self.response_event = response_event
-        self.ws = websocket.WebSocketApp(
+        self.nondynamicws = websocket.WebSocketApp(
             self.ws_url,
-            on_message=self.on_message,
-            on_error=self.on_error,
-            on_close=self.on_close
+            on_message=on_message,
+            on_error=on_error,
+            on_close=on_close,
+            on_open=on_open
         )
-        self.ws.on_open = self.on_open
+        
 
         # Send the message
         try:
-            # Trigger the message to the channel
-            self.send_message(channel, event, message)
-            self.log(f"Message sent: {message}")
+           # Trigger the message to the channel
+          self.send_message(channel, event, message)
+          self.log(f"Message sent: {message}")
         except Exception as e:
-            self.log(f"Failed to send message: {e}")
-            return False
+          self.log(f"Failed to send message: {e}")
+          return False
+
+
 
         # Run the WebSocket connection in a separate thread to listen for responses
-        thread = threading.Thread(target=self.ws.run_forever)
+        thread = threading.Thread(target=self.nondynamicws.run_forever)
         thread.start()
 
         # Wait for up to 5 seconds for the response
@@ -158,5 +177,5 @@ class pusheraio:
                 return self.response
 
         # Timeout, no response received
-        self.ws.close()
-        return False
+        self.nondynamicws.close()
+        return False    
