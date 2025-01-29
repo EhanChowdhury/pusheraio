@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pusheraio",  # Replace with your desired package name
-    version="0.1",
+    version="0.2",
     packages=find_packages(),
     install_requires=[
         "pusher",
