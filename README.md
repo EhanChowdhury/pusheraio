@@ -12,7 +12,21 @@ Pusher-AIO is an enhanced version of the official Pusher library that provides b
 
 ## Installation
 
-You can install the required dependencies using `pip`:
+You can install Pusher-AIO directly from GitHub using `pip`:
+
+```bash
+pip install git+https://github.com/EhanChowdhury/pusheraio.git
+```
+
+Alternatively, you can manually clone the repository and install the dependencies:
+
+```bash
+git clone https://github.com/EhanChowdhury/pusheraio.git
+cd pusheraio
+pip install .
+```
+
+Ensure that you have `pusher` and `websocket-client` installed as dependencies:
 
 ```bash
 pip install pusher websocket-client
