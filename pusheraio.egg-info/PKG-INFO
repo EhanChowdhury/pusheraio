@@ -1,8 +1,8 @@
 Metadata-Version: 2.1
 Name: pusheraio
-Version: 0.1
+Version: 0.2
 Summary: All in one pusher library.
-Home-page: https://github.com/EhanChowdhury/pusher-aio
+Home-page: https://github.com/EhanChowdhury/pusheraio
 Author: Ehan Chowdhury
 Author-email: nibizsoft@gmail.com
 Classifier: Programming Language :: Python :: 3
@@ -14,122 +14,143 @@ License-File: LICENSE
 Requires-Dist: pusher
 Requires-Dist: websocket-client
 
-# WAbot - WhatsApp Automation Library
+# Pusher-AIO - A Complete Python Wrapper for Pusher
 
-WAbot is a Python library designed to automate interactions with WhatsApp Web using Selenium. With this library, you can automate tasks such as sending messages, checking if a phone number is registered on WhatsApp, and more. This library is ideal for developers looking to integrate WhatsApp automation into their Python-based applications or projects.
+Pusher-AIO is an enhanced version of the official Pusher library that provides both message sending and receiving capabilities, including handling WebSocket connections and events. The official Pusher library only supports sending messages, but Pusher-AIO takes it a step further by allowing users to receive and handle messages from channels, making it a complete solution for working with Pusher in Python.
 
 ## Features
 
-- **Headless Browser Automation**: Uses Selenium and ChromeDriver for headless browser automation.
-- **Login Automation**: Waits for WhatsApp Web QR code and allows saving it for later use.
-- **Message Sending**: Sends messages with a humanized delay for a more natural experience.
-- **Contact Navigation**: Goes to a specific contact by name or navigates to an unknown phone number.
-- **Random Advertisement Sending**: Sends a random advertisement from a list of pre-defined ads.
-- **Message Retrieval**: Retrieves the most recent message and its sender.
-- **Error Handling**: Handles potential errors during interactions, such as missing elements or failed actions.
-- **Screenshot**: Takes screenshots for debugging or logging purposes.
+- **Send Messages:** Trigger events on Pusher channels and send messages.
+- **Receive Messages:** Listen for incoming messages from Pusher channels with support for custom event handlers.
+- **WebSocket Connection:** Persistent WebSocket connection to Pusher with automatic reconnection.
+- **Event Handling:** Register custom event handlers with a decorator to manage different events on specific channels.
+- **Response Handling:** Send a message and wait for a response with a 5-second timeout, enabling a full communication cycle.
 
 ## Installation
 
-1. Ensure you have Python 3.6 or higher installed.
-2. Install the required dependencies:
+You can install Pusher-AIO directly from GitHub using `pip`:
 
 ```bash
-pip install selenium pyperclip webdriver-manager
+pip install git+https://github.com/EhanChowdhury/pusheraio.git
 ```
 
-3. Install the WAbot library:
+Alternatively, you can manually clone the repository and install the dependencies:
 
 ```bash
-pip install git+https://github.com/EhanChowdhury/WAbot.git
+git clone https://github.com/EhanChowdhury/pusheraio.git
+cd pusheraio
+pip install .
+```
+
+Ensure that you have `pusher` and `websocket-client` installed as dependencies:
+
+```bash
+pip install pusher websocket-client
 ```
 
 ## Usage
 
-### Initialize WAbot
+1. **Initialize the Pusher-AIO object:**
 
 ```python
-from WAbot import WAbot
+from pusheraio import pusheraio
 
-# Create an instance of WAbot
-bot = WAbot(verbose=True, saveQR=False, headless=False)
+# Replace with your own Pusher credentials
+app_id = 'your_app_id'
+key = 'your_key'
+secret = 'your_secret'
+cluster = 'your_cluster'
+verbose = True  # Set to True to enable verbose logging
+
+pusher = pusheraio(app_id, key, secret, cluster, verbose)
 ```
 
-### Go to a Contact
-
-Navigate to a specific contact by name:
+2. **Sending a Message:**
 
 ```python
-bot.go_to_contact('John Doe')
+# Send a message to a channel
+channel = 'my-channel'
+event = 'my-event'
+message = 'Hello, world!'
+pusher.send_message(channel, event, message)
 ```
 
-### Send a Message
+3. **Receiving Messages:**
 
-Send a message to the currently selected contact:
+Use the `@event` decorator to handle specific events on channels:
 
 ```python
-bot.send_message('Hello! This is an automated message.', humanize=2)
+# Define an event handler
+@pusher.event('my-channel', 'my-event')
+def handle_message(data):
+    print(f"Received data: {data}")
 ```
 
-### Check if a Phone Number is on WhatsApp
-
-Check if a specific phone number is registered on WhatsApp:
+4. **Start Listening for Events:**
 
 ```python
-is_wa = bot.check_if_wa('+1234567890')
-print(is_wa)  # True if on WhatsApp, False otherwise
+# Start the WebSocket connection and listen for events
+pusher.start()
 ```
 
-### Send a Random Advertisement
-
-Send a random advertisement from a predefined list of ads:
+5. **Send Message and Wait for Response:**
 
 ```python
-ads = [
-    {'Message': 'Buy one, get one free!', 'Sender': 'Company A'},
-    {'Message': '50% off on all products!', 'Sender': 'Company B'}
-]
-
-bot.send_random_ad(ads, humanize=2)
+# Send a message and wait for a response
+response = pusher.send_message_and_get_response('my-channel', 'my-event', 'Hello!', 'response-event')
+if response:
+    print(f"Received response: {response}")
+else:
+    print("No response received within the timeout.")
 ```
 
-### Get the Latest Message
-
-Retrieve the latest message in the chat:
+6. **Close the WebSocket:**
 
 ```python
-message = bot.get_message()
-print(message)
+# Stop the WebSocket connection
+pusher.quit()
 ```
 
-### Take a Screenshot
+## API Methods
 
-Save a screenshot of the current WhatsApp Web page:
+### `pusheraio(app_id, key, secret, cluster, verbose)`
+- **Parameters:**
+  - `app_id` (str): Your Pusher app ID.
+  - `key` (str): Your Pusher key.
+  - `secret` (str): Your Pusher secret.
+  - `cluster` (str): Your Pusher cluster.
+  - `verbose` (bool): Enable verbose logging for debugging.
 
-```python
-bot.save_screenshot('whatsapp_screenshot.png')
-```
+### `send_message(channel, event, message)`
+- **Parameters:**
+  - `channel` (str): The name of the channel.
+  - `event` (str): The name of the event.
+  - `message` (str): The message to send.
 
-## Arguments
+### `event(channel_name, event_name)`
+- **Parameters:**
+  - `channel_name` (str): The name of the channel.
+  - `event_name` (str): The name of the event.
+- **Returns:** A decorator function to handle incoming messages for the specified event.
 
-- `verbose` (bool): Whether to print logs to the console (default: `True`).
-- `saveQR` (bool): Whether to save the QR code as a screenshot (default: `False`).
-- `humanize` (int): Time delay (in seconds) to humanize actions like typing and sending messages.
-- `headless` (bool): Whether to run the program in headless mode (default: `False`).
-- `sandbox` (bool): Whether to use a sandbox environment (default: `True`).
-- `shm` (bool): Whether to enable shared memory (default: `True`).  
+### `start()`
+- Starts the WebSocket connection to Pusher and listens for incoming messages.
 
-## Dependencies
+### `quit()`
+- Stops the WebSocket connection.
 
-- Python 3.6+
-- [Selenium](https://pypi.org/project/selenium/)
-- [pyperclip](https://pypi.org/project/pyperclip/)
-- [webdriver-manager](https://pypi.org/project/webdriver-manager/)
+### `send_message_and_get_response(channel, event, message, response_event)`
+- **Parameters:**
+  - `channel` (str): The name of the channel.
+  - `event` (str): The name of the event to trigger.
+  - `message` (str): The message to send.
+  - `response_event` (str): The event to listen for a response.
+- **Returns:** The response message or `False` if no response is received within 5 seconds.
+
+## Contributing
+
+Feel free to fork the repository and submit issues or pull requests. Contributions are welcome!
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to contribute by creating issues or submitting pull requests. For any questions or feedback, open an issue in the repository!

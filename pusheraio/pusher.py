@@ -128,8 +128,12 @@ class pusheraio:
 
         # WebSocket event handler methods
         def on_message(nondynamicws, message):
-            self.response = message
             self.log(f"Message received: {message}")
+            if self.response_event in message:
+                self.response = message
+                self.log(f"Response event matched, message received: {message}")
+            else:
+                self.log(f"Response event not found, continuing to wait.")
 
         def on_error(nondynamicws, error):
             self.log(f"Error: {error}")
