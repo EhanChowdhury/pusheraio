@@ -117,8 +117,8 @@ class pusheraio:
         except:
             self.log("WS has not been created yet.")
 
-    def send_message_and_get_response(self, channel, event, message, response_event):
-        """Send message, wait for response with a 5-second timeout"""
+    def send_message_and_get_response(self, channel, event, message, response_event, timeout):
+        """Send message, wait for response with a timeout"""
         try:
            if self.nondynamicws:
                self.nondynamicws.close()
@@ -179,7 +179,6 @@ class pusheraio:
         thread.start()
 
         # Wait for up to 5 seconds for the response
-        timeout = 5
         start_time = time.time()
 
         while time.time() - start_time < timeout:
