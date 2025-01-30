@@ -37,7 +37,7 @@ pip install pusher websocket-client
 1. **Initialize the Pusher-AIO object:**
 
 ```python
-from pusher_aio import pusheraio
+from pusheraio import pusheraio
 
 # Replace with your own Pusher credentials
 app_id = 'your_app_id'
