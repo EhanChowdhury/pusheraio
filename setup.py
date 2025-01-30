@@ -15,7 +15,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Ehan Chowdhury",
     author_email="nibizsoft@gmail.com",
-    url="https://github.com/EhanChowdhury/pusher-aio",  # Replace with your GitHub or project URL
+    url="https://github.com/EhanChowdhury/pusheraio",  # Replace with your GitHub or project URL
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
