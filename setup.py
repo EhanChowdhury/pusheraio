@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="pusheraio",  # Replace with your desired package name
+    name="pusheraio",  
     version="0.2",
     packages=find_packages(),
     install_requires=[
@@ -15,7 +15,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Ehan Chowdhury",
     author_email="nibizsoft@gmail.com",
-    url="https://github.com/EhanChowdhury/pusheraio",  # Replace with your GitHub or project URL
+    url="https://github.com/EhanChowdhury/pusheraio",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
