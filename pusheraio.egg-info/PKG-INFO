@@ -1,6 +1,6 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.2
 Name: pusheraio
-Version: 0.2
+Version: 0.4
 Summary: All in one pusher library.
 Home-page: https://github.com/EhanChowdhury/pusheraio
 Author: Ehan Chowdhury
@@ -13,6 +13,15 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: pusher
 Requires-Dist: websocket-client
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
 
 # Pusher-AIO - A Complete Python Wrapper for Pusher
 
